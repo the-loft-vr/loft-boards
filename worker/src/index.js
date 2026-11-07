@@ -170,7 +170,7 @@ async function end(req, env, now) {
   if (pk.err) { await rlAdd(env, day, ip, "bad", 1); return txt("bad " + pk.err); }
   const name = cleanName(pk.name);
   if (!name || name !== pk.name) { await rlAdd(env, day, ip, "bad", 1); return txt("bad name"); }
-  if (badName(name)) return txt("ok 0");   // quietly ignored (the client must not retry)
+  if (badName(name) || /^\[\d+\] Local Player$/.test(name)) return txt("ok 0");   // quietly ignored (abusive, or the Unity editor's ClientSim test player)
   if (pk.relay) {
     const r = await rlRow(env, day, ip);
     if (r && r.relays + pk.recs.length > DAY_RELAYS) return txt("ok 0");
