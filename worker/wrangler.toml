@@ -1,0 +1,9 @@
+name = "loft-boards"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "loft-boards"
+database_id = "3d600d57-fbd9-4904-ae13-7e4a597e59ff"

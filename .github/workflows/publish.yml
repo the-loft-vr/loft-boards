@@ -1,0 +1,44 @@
+name: publish boards
+# Every ~10 minutes (and on demand): fetch the Worker's export and publish it as boards.txt on GitHub Pages.
+# Commits only when the boards changed. Uses the built-in GITHUB_TOKEN only.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - name: fetch export
+        id: f
+        run: |
+          curl -fsS --retry 3 --max-time 30 https://loft-boards.theloft.workers.dev/export -o new.txt
+          head -1 new.txt | grep -qx 'LB1'
+          size=$(stat -c %s new.txt); echo "size $size"; test "$size" -lt 7000
+          if cmp -s new.txt site/boards.txt; then echo "changed=no" >> "$GITHUB_OUTPUT"; else mv new.txt site/boards.txt; echo "changed=yes" >> "$GITHUB_OUTPUT"; fi
+      - name: commit
+        if: steps.f.outputs.changed == 'yes'
+        run: |
+          git config user.name "loft-boards bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/boards.txt
+          git commit -m "boards update"
+          git push
+      - uses: actions/configure-pages@v5
+        if: steps.f.outputs.changed == 'yes' || github.event_name == 'workflow_dispatch'
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.f.outputs.changed == 'yes' || github.event_name == 'workflow_dispatch'
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+        if: steps.f.outputs.changed == 'yes' || github.event_name == 'workflow_dispatch'
