@@ -1,5 +1,5 @@
 name: publish boards
-# Every ~10 minutes at :07/:17/... (off the congested round minutes) (and on demand): fetch the Worker's export and publish it as boards.txt on GitHub Pages.
+# Every ~10 minutes (self-chained, see the chain job; the cron is a fallback) at :07/:17/... (off the congested round minutes) (and on demand): fetch the Worker's export and publish it as boards.txt on GitHub Pages.
 # Commits only when the boards changed. Uses the built-in GITHUB_TOKEN only.
 on:
   schedule:
@@ -15,6 +15,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
     steps:
@@ -34,6 +35,15 @@ jobs:
           git add site/boards.txt
           git commit -m "boards update"
           git push
+      - name: keepalive (once a month, so GitHub never disables the workflow after 60 quiet days)
+        run: |
+          m=$(date -u +%Y-%m)
+          if [ "$(cat keepalive.txt 2>/dev/null)" != "$m" ]; then
+            echo "$m" > keepalive.txt
+            git config user.name "loft-boards bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add keepalive.txt && git commit -m "keepalive $m" && git push || true
+          fi
       - uses: actions/configure-pages@v5
         if: steps.f.outputs.changed == 'yes' || github.event_name == 'workflow_dispatch'
       - uses: actions/upload-pages-artifact@v3
@@ -42,3 +52,28 @@ jobs:
           path: site
       - uses: actions/deploy-pages@v4
         if: steps.f.outputs.changed == 'yes' || github.event_name == 'workflow_dispatch'
+  # Self-chaining backup for the schedule (GitHub has not been running this repo's cron): after every run, wait,
+  # then dispatch this workflow again with the built-in token. Only one chain survives: if another run of this
+  # workflow is already queued/waiting/running, this one does not re-dispatch. Stop it by disabling the workflow
+  # (gh workflow disable publish.yml) or setting the repo variable CHAIN=off.
+  chain:
+    needs: publish
+    if: always() && vars.CHAIN != 'off'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: wait
+        run: sleep 540
+      - name: re-dispatch unless another run is pending
+        run: |
+          others=$(gh run list --workflow publish.yml --limit 30 --json databaseId,status,createdAt \
+            --jq "[.[] | select(.status != \"completed\" and .databaseId != ${{ github.run_id }} and (.createdAt | fromdateiso8601) > (now - 3600))] | length")
+          echo "other open runs: $others"
+          if [ "$others" -gt 0 ]; then echo "another run is pending; it carries the chain"; exit 0; fi
+          gh workflow run publish.yml --ref main
+          echo "dispatched next run"
