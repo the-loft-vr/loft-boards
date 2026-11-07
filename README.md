@@ -37,3 +37,12 @@ never used to ban anyone.
 - Take the Worker down: `cd worker && npx wrangler delete loft-boards`; database: `npx wrangler d1 delete loft-boards`.
 - World side: `LoftR34GlobalBoard.RunBoth(false)` in Unity removes the reader/sender from both scenes (the boards then
   work exactly as before, local carry-merge only).
+
+## Tools
+
+- `tools/decode_check.mjs packets.json <key file>`: decodes URL sequences with the Worker's own parser (offline).
+- `tools/simulate.py packets.json [gap]`: replays the exact URL sequences the world sends against the live Worker.
+  `packets.json` comes from the world's own packer (`LoftGlobalBoard34._TestPack` in the Unity editor).
+
+Note: GitHub pauses scheduled workflows in a repo with no activity for 60 days. The bot's commits count as activity,
+but if the boards do not change for 60 days, re-enable the workflow under Actions (or run it once by hand).
