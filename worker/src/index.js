@@ -55,6 +55,7 @@ function capFor(board, now) {
 // Guess Me! total guessed: a count that grows by at most ~30 a round (60 s rounds); a jump over the last stored value must
 // fit the time since then (at least 40 is always allowed)
 const TOTAL_BOARD = 10;
+const TIME_MIN = 300;   // the Time board lists players from 5 minutes in total (the world does the same)
 function jumpOk(prev, prevTs, v, now) {
   if (prev === null || prev === undefined) return true;
   return v - prev <= Math.max(40, Math.ceil((now - prevTs) / 60000) * 30);
@@ -186,7 +187,7 @@ async function store(env, name, recs, relay, now) {
   const tb = new Map(); for (const t of tombs.results) tb.set(t.board, t.maxv);
   let changed = 0;
   for (const [b, v] of recs) {
-    if (v <= 0 || v > capFor(b, now)) continue;
+    if (v <= 0 || v > capFor(b, now) || (b === 3 && v < TIME_MIN)) continue;
     const dead = Math.max(tb.has(b) ? tb.get(b) : 0, tb.has(-1) ? tb.get(-1) : 0);
     if (v <= dead) continue;
     const cur = await env.DB.prepare("SELECT self, relay, ts FROM scores WHERE board=? AND name=?").bind(b, name).first();
@@ -211,7 +212,7 @@ async function exportText(env) {
   const lists = [];
   for (let b = 0; b < NB; b++) {
     const r = await env.DB.prepare("SELECT name, best FROM scores WHERE board=? ORDER BY best DESC LIMIT ?").bind(b, TOP + 20).all();
-    const rows = r.results.filter(x => x.best > 0 && x.best <= capFor(b, now) && !badName(x.name));
+    const rows = r.results.filter(x => x.best > 0 && x.best <= capFor(b, now) && !(b === 3 && x.best < TIME_MIN) && !badName(x.name));
     rows.sort((x, y) => (y.best - x.best) || ord(x.name, y.name));
     lists.push(rows.slice(0, TOP));
   }
