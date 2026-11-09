@@ -8,7 +8,9 @@
 // the client's IP, hashed with a salt that changes every day (no IP is stored).
 //
 // Submission bits (MSB first, packed into 10-bit symbols, zero padded), then 2 checksum symbols:
-//   version 3 (=1) | relay 1 | name length 7 (bytes) | name UTF-8 | records 4 (1..11) | per record: board 4, bits 5, value <bits>
+//   version 3 (=1) | relay 1 | name length 7 (bytes) | name UTF-8 | records 4 (1..15) | per record: board 4, bits 5, value <bits>
+//   r39: version 3 (=2) is the same with records 5 (1..22) and board 5 (boards 0..21); the world sends version 1 whenever
+//   every record fits it (boards 0..10), so worlds built before r39 and after both talk to this Worker
 //   checksum: h = CHK_KEY; for each data symbol s: h = (h * 1103 + s + 7) % 1048573 -> symbols h >> 10, h & 1023
 //
 // Public:  /export (the compact board text the GitHub Action publishes), /health
@@ -16,8 +18,10 @@
 //
 // Secrets (wrangler secret put): ADMIN_KEY, CHK_KEY (also baked into the world), IP_SALT.
 
-const NB = 11;
+const NB = 22;
 const TOP = 20;               // entries per board in the export (fewer if the byte budget runs out)
+// r39: the boards added in r39 (11..21) export their top 10 only (boards.txt must stay under ~7 KB for the iPad)
+const TOPS = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
 const BUDGET = 6500;          // export bytes (the iPad cuts string downloads at about 8 KB)
 const TOMB_EXPORT = 40;       // most recent removals listed in the export (clients drop them from carried lists)
 const MAX_SYMS = 140;
@@ -28,11 +32,17 @@ const DAY_PACKETS = 80, DAY_RELAYS = 150, DAY_BAD = 15;
 const LAUNCH = Date.UTC(2026, 10, 5);   // the boards started on 2026-11-06 (r30); one day of slack
 const BOARD_NAMES = ["Beer pong: longest streak", "Beer pong: most wins", "Loft Regulars: most visits", "Loft Regulars: time (seconds)",
   "Wheel: most spins", "Kon: most betrayed", "Lucky Shot: survivals", "Lucky Shot: deaths", "Lucky Shot: wins",
-  "Guess Me!: best round", "Guess Me!: total guessed"];
-const HARD_CAP = [1000, 100000, 100000, 720000000, 100000, 100000, 100000, 100000, 100000, 1000, 100000];   // the world's own caps
+  "Guess Me!: best round", "Guess Me!: total guessed",
+  "Kon: most times chosen", "Tetrass: top score", "Tetrass: highest level", "Bleach Me If You Can: top score", "Bleach Me If You Can: highest level",
+  "Galax and Relax: top score", "Galax and Relax: highest level",
+  "NES Super Mario: time played (seconds)", "NES Tetris: time played (seconds)", "NES Pac-Man: time played (seconds)", "NES Galaga: time played (seconds)"];
+const HARD_CAP = [1000, 100000, 100000, 720000000, 100000, 100000, 100000, 100000, 100000, 1000, 100000,
+  100000, 99999999, 999, 99999999, 999, 99999999, 999, 720000000, 720000000, 720000000, 720000000];   // the world's own caps
+// the lowest value a board lists (the world does the same): Time in the Loft from 5 minutes, NES time played from 1 minute
+const MIN_V = [1, 1, 1, 300, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 60, 60, 60, 60];
 
 // plausible maxima for one player, from the game code (generous: playing non-stop since the launch)
-function capFor(board, now) {
+export function capFor(board, now) {
   const days = Math.max(1, Math.ceil((now - LAUNCH) / 86400000));
   let c;
   switch (board) {
@@ -47,6 +57,15 @@ function capFor(board, now) {
     case 8: c = 600 * days; break;              // Lucky Shot wins
     case 9: c = 30; break;                      // Guess Me! words in one 60 s round
     case 10: c = 3000 * days; break;            // Guess Me! total correct guesses (plus the per-submission jump check)
+    // r39
+    case 11: c = 1500 * days; break;            // Kon chose this player (one pick per turn, a turn takes ~20 s or more)
+    case 12: c = 3000000 * days; break;         // Tetrass best run (lines x level, endless after level 15)
+    case 13: c = 150 * days; break;             // Tetrass highest level (10+ lines a level)
+    case 14: c = 2000000 * days; break;         // Bleach Me If You Can best run
+    case 15: c = 60 * days; break;              // Bleach Me If You Can highest level (40 stages + bonus rounds = 47, then the ending)
+    case 16: c = 2000000 * days; break;         // Galax and Relax best run
+    case 17: c = 60 * days; break;              // Galax and Relax highest level (15 stages, then they repeat harder)
+    case 18: case 19: case 20: case 21: c = 86400 * days + 3600; break;   // NES seconds played per game (PC only)
     default: return 0;
   }
   return Math.min(c, HARD_CAP[board]);
@@ -56,6 +75,7 @@ function capFor(board, now) {
 // fit the time since then (at least 40 is always allowed)
 const TOTAL_BOARD = 10;
 const TIME_MIN = 300;   // the Time board lists players from 5 minutes in total (the world does the same)
+export function listable(board, v, now) { return board >= 0 && board < NB && v > 0 && v >= MIN_V[board] && v <= capFor(board, now); }
 function jumpOk(prev, prevTs, v, now) {
   if (prev === null || prev === undefined) return true;
   return v - prev <= Math.max(40, Math.ceil((now - prevTs) / 60000) * 30);
@@ -109,7 +129,9 @@ export function parsePacket(syms, key) {
   let p = 0;
   const take = n => { if (p + n > bits.length) throw new Error("eof"); let v = 0; for (let i = 0; i < n; i++) v = v * 2 + bits[p++]; return v; };
   try {
-    if (take(3) !== 1) return { err: "version" };
+    const ver = take(3);
+    if (ver !== 1 && ver !== 2) return { err: "version" };
+    const wide = ver === 2 ? 5 : 4;   // r39: version 2 = 5-bit record count and board ids
     const relay = take(1) === 1;
     const nl = take(7);
     if (nl < 1 || nl > 96) return { err: "namelen" };
@@ -117,11 +139,11 @@ export function parsePacket(syms, key) {
     for (let i = 0; i < nl; i++) nb[i] = take(8);
     let name;
     try { name = new TextDecoder("utf-8", { fatal: true }).decode(nb); } catch { return { err: "utf8" }; }
-    const nr = take(4);
+    const nr = take(wide);
     if (nr < 1 || nr > NB) return { err: "records" };
     const recs = [], seen = new Set();
     for (let r = 0; r < nr; r++) {
-      const b = take(4), k = take(5);
+      const b = take(wide), k = take(5);
       if (b >= NB || seen.has(b) || k < 1 || k > 30) return { err: "record" };
       seen.add(b);
       recs.push([b, take(k)]);
@@ -187,7 +209,7 @@ async function store(env, name, recs, relay, now) {
   const tb = new Map(); for (const t of tombs.results) tb.set(t.board, t.maxv);
   let changed = 0;
   for (const [b, v] of recs) {
-    if (v <= 0 || v > capFor(b, now) || (b === 3 && v < TIME_MIN)) continue;
+    if (!listable(b, v, now)) continue;
     const dead = Math.max(tb.has(b) ? tb.get(b) : 0, tb.has(-1) ? tb.get(-1) : 0);
     if (v <= dead) continue;
     const cur = await env.DB.prepare("SELECT self, relay, ts FROM scores WHERE board=? AND name=?").bind(b, name).first();
@@ -206,15 +228,15 @@ async function store(env, name, recs, relay, now) {
 const ord = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 const utf8len = s => new TextEncoder().encode(s).length;
 
-// the compact board text: "LB1", then "#x" removals ("board\tname\tmaxv", board * = all), then "#0".."#8" with "name\tvalue" lines
-async function exportText(env) {
+// the compact board text: "LB1", then "#x" removals ("board\tname\tmaxv", board * = all), then "#0".."#21" with "name\tvalue" lines
+export async function exportText(env) {
   const now = Date.now();
   const lists = [];
   for (let b = 0; b < NB; b++) {
     const r = await env.DB.prepare("SELECT name, best FROM scores WHERE board=? ORDER BY best DESC LIMIT ?").bind(b, TOP + 20).all();
-    const rows = r.results.filter(x => x.best > 0 && x.best <= capFor(b, now) && !(b === 3 && x.best < TIME_MIN) && !badName(x.name));
+    const rows = r.results.filter(x => listable(b, x.best, now) && !badName(x.name));
     rows.sort((x, y) => (y.best - x.best) || ord(x.name, y.name));
-    lists.push(rows.slice(0, TOP));
+    lists.push(rows.slice(0, TOPS[b]));
   }
   const tombs = (await env.DB.prepare("SELECT board, name, maxv FROM tomb ORDER BY ts DESC LIMIT ?").bind(TOMB_EXPORT).all()).results;
   let out = "LB1\n", used = 4;
@@ -275,7 +297,7 @@ async function admin(req, env, path) {
   const name = typeof body.name === "string" ? body.name : "";
   const board = Number.isInteger(body.board) ? body.board : -2;
   if (path === "/admin/api/delete") {          // remove one score; that name only comes back with a higher score
-    if (!name || board < 0 || board >= NB) return json({ error: "need board 0-10 and name" }, 400);
+    if (!name || board < 0 || board >= NB) return json({ error: "need board 0-" + (NB - 1) + " and name" }, 400);
     const cur = await env.DB.prepare("DELETE FROM scores WHERE board=? AND name=? RETURNING best").bind(board, name).first();
     const maxv = Math.max(cur ? cur.best : 0, Number.isInteger(body.maxv) ? body.maxv : 0);
     await env.DB.prepare("INSERT INTO tomb (board, name, maxv, ts) VALUES (?, ?, ?, ?) ON CONFLICT(board, name) DO UPDATE SET maxv=max(maxv, excluded.maxv), ts=excluded.ts").bind(board, name, maxv, now).run();
