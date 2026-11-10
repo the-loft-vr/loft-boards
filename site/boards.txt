@@ -5,6 +5,7 @@ nooch․_․	2
 PlayfulTiger7996 906d	1
 Suko_the_goat	1
 butreyo	1
+vrEboniEpiphany	1
 #1
 #2
 Moe The Greatt	5
@@ -29,10 +30,10 @@ Mitsuki ®	1
 Mutt Certified	1
 #3
 ~RhysVRC~	83164
-acerhatty	15134
-vrEboniEpiphany	15098
+acerhatty	16188
+vrEboniEpiphany	15660
 Moe The Greatt	11405
-onkdl	8319
+onkdl	9001
 watson_4e40	6639
 a tool	5387
 Sable~Gravez	4560
@@ -52,6 +53,8 @@ ArtyDoodles	2302
 Moe The Greatt	1
 PlayfulTiger7996 906d	1
 cricket․126729	1
+onkdl	1
+vrEboniEpiphany	1
 watson_4e40	1
 #5
 Tal_elite	1
