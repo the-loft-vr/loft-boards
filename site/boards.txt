@@ -32,7 +32,7 @@ Mutt Certified	1
 ~RhysVRC~	83164
 acerhatty	21325
 vrEboniEpiphany	16921
-onkdl	13572
+onkdl	14714
 Moe The Greatt	11405
 watson_4e40	6639
 a tool	5387
@@ -50,10 +50,10 @@ dinojustin	2379
 Tal_elite	2369
 ArtyDoodles	2302
 #4
+onkdl	2
 Moe The Greatt	1
 PlayfulTiger7996 906d	1
 cricket․126729	1
-onkdl	1
 vrEboniEpiphany	1
 watson_4e40	1
 #5
