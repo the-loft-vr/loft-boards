@@ -31,9 +31,9 @@ Mutt Certified	1
 #3
 ~RhysVRC~	83164
 acerhatty	17259
-vrEboniEpiphany	15811
+vrEboniEpiphany	16921
 Moe The Greatt	11405
-onkdl	9516
+onkdl	10529
 watson_4e40	6639
 a tool	5387
 Sable~Gravez	4560
@@ -149,8 +149,8 @@ _-Reaper_-	17994
 Joe the great	18
 _-Reaper_-	6
 #18
+onkdl	204
 AsheVA	67
-onkdl	60
 #19
 Rin Uchiha	150
 _-Reaper_-	86
