@@ -32,7 +32,7 @@ Mutt Certified	1
 ~RhysVRC~	83164
 acerhatty	22322
 vrEboniEpiphany	16921
-onkdl	15123
+onkdl	15639
 Moe The Greatt	11405
 watson_4e40	6639
 a tool	5387
@@ -154,6 +154,7 @@ AsheVA	67
 #19
 Rin Uchiha	150
 _-Reaper_-	86
+onkdl	60
 #20
 #21
 AsheVA	150
