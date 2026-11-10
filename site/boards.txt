@@ -36,17 +36,17 @@ AliceUnchained	3375
 ΣDΛП	2963
 ɪɴᴋʏ_ᴀsʜᴢᴇʀᴏ	2731
 ＤＩＺＺＥＹsʟᴇɴᴛ	2625
+watson_4e40	2587
 acerhatty	2481
 nubian1king acd4	2452
+dinojustin	2379
+ArtyDoodles	2302
 vrEboniEpiphany	2178
-dinojustin	2047
-ArtyDoodles	2044
 ByeFelisa62652	2032
 T4rZan	1980
 KrymynalKrimzon	1922
 Snow Animation	1787
-nooch․_․	1630
-watson_4e40	1576
+General_Archer	1633
 #4
 Moe The Greatt	1
 PlayfulTiger7996 906d	1
@@ -85,16 +85,16 @@ T4rZan	4
 T4rZan	12
 ΣDΛП	9
 #11
+dinojustin	7
 KrymynalKrimzon	5
-dinojustin	5
+General_Archer	4
+ArtyDoodles	3
 Snow Animation	3
+Toxicgamer615	3
 Mr_Shadow1_23	2
 acerhatty	2
 watson_4e40	2
-ArtyDoodles	1
 Black puh	1
-General_Archer	1
-Kayden1028	1
 #12
 SynCity~	1366
 cephalosquid	1254
@@ -116,3 +116,4 @@ Joe the great	18
 #19
 #20
 #21
+smoke kobold	78
