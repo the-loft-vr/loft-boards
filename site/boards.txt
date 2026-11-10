@@ -30,14 +30,14 @@ Nether_Diamond	1
 #3
 ~RhysVRC~	80821
 Moe The Greatt	11405
-acerhatty	9798
+acerhatty	10852
 watson_4e40	6639
 a tool	5387
+onkdl	3966
 DarkDaisy_X	3591
 Sable~Gravez	3548
 brian2143 8914	3383
 AliceUnchained	3375
-onkdl	3302
 AndyGTM	3267
 ΣDΛП	2963
 ɪɴᴋʏ_ᴀsʜᴢᴇʀᴏ	2731
@@ -87,10 +87,14 @@ watson_4e40	1
 亗Ｄａｎｉ×͜× Grro 亗	1
 爱Milo她	1
 #9
+Rappaè	5
+Tal_elite	5
 T4rZan	4
 ΣDΛП	4
 #10
 T4rZan	12
+Tal_elite	12
+Rappaè	11
 ΣDΛП	9
 #11
 dinojustin	7
