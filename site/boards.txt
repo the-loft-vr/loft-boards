@@ -179,3 +179,5 @@ onkdl	60
 #21
 AsheVA	150
 smoke kobold	78
+#22
+#23
