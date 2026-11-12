@@ -157,19 +157,19 @@ Tal_elite	4
 Jackthewolf19	96334
 ༒ᴀᴋɪʏᴀᴍᴀ	72119
 EclipseDemon	2459
+FoxNocturia	2456
 SynCity~	1366
 cephalosquid	1254
 Idris Sinclair	1156
 爱Milo她	1063
 ~GoldieFredVA~	702
-FoxNocturia	617
 Rose861	417
 #13
 foxtreet	74
 Jackthewolf19	23
 ༒ᴀᴋɪʏᴀᴍᴀ	10
 EclipseDemon	3
-FoxNocturia	2
+FoxNocturia	3
 Idris Sinclair	2
 SynCity~	2
 cephalosquid	2
@@ -194,6 +194,7 @@ Rose861	95464
 _-Reaper_-	17994
 MrSandio	12780
 °ᴘʀᴀᴅᴀ°	11800
+FoxNocturia	9977
 Idris Sinclair	1518
 MXMARSHALL3402	400
 foxtreet	74
@@ -202,6 +203,7 @@ foxtreet	74
 Joe the great	18
 Rose861	15
 _-Reaper_-	6
+FoxNocturia	5
 MrSandio	5
 °ᴘʀᴀᴅᴀ°	5
 Idris Sinclair	2
