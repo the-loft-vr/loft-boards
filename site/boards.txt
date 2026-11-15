@@ -195,7 +195,7 @@ armoredriley99	3600
 FoxNocturia	1900
 SpotlessMind8	1100
 Idris Sinclair	1000
-SoulGemini97	200
+SoulGemini97	300
 foxtreet	74
 #15
 foxtreet	74
