@@ -140,6 +140,7 @@ Shadow Tenshi	1
 Space_Bomb	1
 #9
 KatoReaper_VR	8
+katinastewart	8
 onkdl	8
 vrEboniEpiphany	8
 DabAstra	7
@@ -148,7 +149,6 @@ Maxi_Mapach3	7
 ༺ Cozy ༻	7
 Beckyngab	6
 EchoesofHerz	6
-katinastewart	6
 Ӄɨռɢɖɨǟɮʟօ	6
 ᴛᴇᴅᴅ	6
 DioBrandor1412 c8ea	5
@@ -162,11 +162,11 @@ FaeryMerry 107e	4
 #10
 foxtreet	74
 vrEboniEpiphany	72
+katinastewart	43
 KatoReaper_VR	42
+ʎppɐpdrƐapɟnl	37
 EchoesofHerz	33
 Ӄɨռɢɖɨǟɮʟօ	30
-ʎppɐpdrƐapɟnl	27
-katinastewart	22
 Maxi_Mapach3	20
 ༺ Cozy ༻	16
 tammynortena	15
