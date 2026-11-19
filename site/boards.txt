@@ -40,8 +40,8 @@ wilgus	3
 SerenaBerry404	40048
 Jackthewolf19	36686
 acerhatty	24321
-cricket․126729	23060
-vrEboniEpiphany	20339
+cricket․126729	24179
+vrEboniEpiphany	20952
 Bambam_6999	19209
 onkdl	15639
 StudleeTheCreator a719	15271
@@ -142,26 +142,27 @@ Space_Bomb	1
 onkdl	8
 DabAstra	7
 Maxi_Mapach3	7
+vrEboniEpiphany	7
 ༺ Cozy ༻	7
 Beckyngab	6
 ᴛᴇᴅᴅ	6
 DioBrandor1412 c8ea	5
+KatoReaper_VR	5
 Rappaè	5
 Tal_elite	5
 tammynortena	5
 taylor_saidwhat	5
 ღLylahღ	5
 Deli-DeDee	4
+EchoesofHerz	4
 FaeryMerry 107e	4
 T4rZan	4
-vrEboniEpiphany	4
 ΣDΛП	4
 Darling Nikki	3
-Johnny_Bravo34	2
-Ice_Ice_Babylon efe7	1
 #10
 foxtreet	74
 Maxi_Mapach3	20
+vrEboniEpiphany	17
 ༺ Cozy ༻	16
 tammynortena	15
 T4rZan	12
@@ -171,15 +172,14 @@ DabAstra	11
 Rappaè	11
 Beckyngab	10
 DioBrandor1412 c8ea	10
-vrEboniEpiphany	10
 taylor_saidwhat	9
 ΣDΛП	9
 onkdl	8
 Deli-DeDee	6
 ᴛᴇᴅᴅ	6
-FaeryMerry 107e	4
-Darling Nikki	3
-Johnny_Bravo34	2
+Johnny_Bravo34	5
+KatoReaper_VR	5
+EchoesofHerz	4
 #11
 foxtreet	74
 dinojustin	7
