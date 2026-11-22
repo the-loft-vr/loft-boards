@@ -111,6 +111,7 @@ DioBrandor1412 c8ea	1
 KrymynalKrimzon	1
 K̴h̴o̴n̴s̴h̴u̴	1
 Moe The Greatt	1
+Mystan Shadoz	1
 Space_Bomb	1
 Zenichii	1
 decorarockstar	1
@@ -196,6 +197,7 @@ General_Archer	4
 #12
 Jackthewolf19	96334
 ༒ᴀᴋɪʏᴀᴍᴀ	72119
+Mystan Shadoz	24396
 Zenichii	13452
 MsPeace	9370
 EclipseDemon	2459
@@ -203,18 +205,17 @@ FoxNocturia	2456
 SynCity~	1366
 _-Reaper_-	1289
 Chicken Scratch	1280
-cephalosquid	1254
 #13
 foxtreet	74
 Jackthewolf19	28
 ༒ᴀᴋɪʏᴀᴍᴀ	10
+Mystan Shadoz	7
 Zenichii	5
 MsPeace	4
 EclipseDemon	3
 FoxNocturia	3
 Chicken Scratch	2
 Idris Sinclair	2
-Mystan Shadoz	2
 #14
 armoredriley99	3600
 FoxNocturia	1900
