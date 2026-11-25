@@ -16,7 +16,7 @@ vrEboniEpiphany	1
 foxtreet	74
 Goth Melody	1
 #2
-Jackthewolf19	26
+Jackthewolf19	29
 cricket․126729	19
 SerenaBerry404	14
 StudleeTheCreator a719	13
@@ -25,8 +25,8 @@ NonchalantDej	11
 Bambam_6999	9
 Tiger250	7
 michman989	7
+wilgus	7
 heatheor 1995	6
-wilgus	6
 AnimeShadowYT3	5
 Moe The Greatt	5
 vrEboniEpiphany	4
@@ -39,7 +39,7 @@ ScrotumWrinklez c563	3
 #3
 SerenaBerry404	158971
 ~RhysVRC~	83164
-Jackthewolf19	47354
+Jackthewolf19	48330
 cricket․126729	29448
 vrEboniEpiphany	25420
 acerhatty	24321
@@ -123,6 +123,7 @@ watson_4e40	1
 #8
 foxtreet	74
 K̴h̴o̴n̴s̴h̴u̴	2
+TigerLake	2
 ArtyDoodles	1
 Aӄaʀɨ	1
 Bambam_6999	1
@@ -140,7 +141,6 @@ Moe The Greatt	1
 MrSandio	1
 ScrotumWrinklez c563	1
 Shadow Tenshi	1
-Space_Bomb	1
 #9
 KatoReaper_VR	8
 katinastewart	8
